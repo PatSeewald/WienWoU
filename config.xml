@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget id="at.wifiwien.wienwou" version="0.1.0-b001" xmlns="http://www.w3.org/ns/widget" xmlns:gap="http://phonegap.com/ns/1.0">
+  <name>Wien Wo U</name>
+  <description>Wann kommt die nächste U?</description>
+  <author email="vincenza@wifi-it.at" href="http://www.wifiwien.at">
+    JS SW Developer Team 518
+  </author>
+  <content src="index.html" />
+  <preferences name="android-minSdkVersion" value="26" />
+  <preference name="Orientation" value="landscape" />
+
+  <!-- <plugin name="cordova-plugin-canvas2image" spec="~0.7.0" source="npm" />
+  <plugin name="cordova-plugin-camera" source="npm" spec="~2.1.1" /> -->
+  <plugin name="cordova-plugin-geolocation" source="npm" spec="~2.1.0" />
+
+  <platform name="android">
+    <icon density="ldpi" src="www/icon.png" />
+  </platform>
+
+</widget>

@@ -1,0 +1,37 @@
+* { padding:0; margin:0; }
+
+#map {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:40px;
+}
+
+footer {
+  background:#fff;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:40px;
+  box-shadow:0 0 2px rgba(0,0,0,1);
+  z-index:1000;
+}
+footer h1 {
+  font-size:14px;
+  line-height:40px;
+  font-family:Arial;
+  padding-left:10px;
+  font-weight:normal;
+  color:#343434;
+}
+#debug {
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:9999;
+  background:rgba(255,255,255,0.8);
+  padding:0px;  
+}

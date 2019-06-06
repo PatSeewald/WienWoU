@@ -1,0 +1,17 @@
+{
+    "name": "wienwou",
+    "version": "1.0.0",
+    "description": "WienWoU",
+    "main": "./app/app.js",
+    "repository": {
+        "type": "git",
+        "url": "https://gitlab.com/seewpatr/WienWoU"
+    },
+    "author": "Patrick Seewald",
+    "license": "ISC",
+    "dependencies": {
+        "csv": "^5.1.1",
+        "express": "^4.17.1",
+        "request": "^2.88.0"
+    }
+}
