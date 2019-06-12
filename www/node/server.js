@@ -1,8 +1,8 @@
-let express = require('express'); // Server
-let bp = require('body-parser'); // Request-Daten
-let fs = require('fs'); // Dateien
-let request = require('request'); // Server-Request
-let csv = require('csv'); // CSV-Dateien einlesen
+import express from 'express'; // Server
+import bp from 'body-parser'; // Request-Daten
+import { writeFile } from 'fs'; // Dateien
+import { get } from 'request'; // Server-Request
+import { parse } from 'csv'; // CSV-Dateien einlesen
 
 let app = express();
 let server = app.listen(8287, () => {
@@ -17,7 +17,7 @@ let linien, steige, haltestellen;
 function loadCSV(url) {
   return new Promise((resolve, reject) => {
     console.log(`Start load CSV: ${url} \n`);
-    request.get(url, (error, response, body) => {
+    get(url, (error, response, body) => {
       if (!error && response.statusCode == 200) {
         resolve(body);
       }
@@ -29,7 +29,7 @@ function loadCSV(url) {
 }
 function parseCSV(data) {
   return new Promise((resolve, reject) => {
-    csv.parse(data, { delimiter: ';' }, (error, data) => {
+    parse(data, { delimiter: ';' }, (error, data) => {
       if (!error) {
         resolve(data);
       }
@@ -40,77 +40,71 @@ function parseCSV(data) {
   });
 }
 
-var saveJSON = function() {
+let saveJSON = function () {
 
-  return new Promise( function( res,rej) {
+  return new Promise(function (res, rej) {
 
-  var data = {lines:[]};
-  var c = {
-    U1:'#e20613',
-    U2:'#a762a3',
-    U3:'#ee7d00',
-    U4:'#009540',
-    U6:'#9d6930'
-  };
+    let data = { lines: [] };
+    let c = {
+      U1: '#794646',
+      U2: '#7d5190',
+      U3: '#ed6720',
+      U4: '#28a847',
+      U6: '#9d6930'
+    };
 
-  var linienId =[];
+    let linienId = [];
 
-  //console.log( linien );
-  for (i in linien ) {
-    if ( linien[i][4] == 'ptMetro' ) {
-      linienId[ linien[i][0]*1 ] = data.lines.length;
-      data.lines.push({
-        name:linien[i][1],
-        color:c[linien[i][1]],
-        stations:[]
-      });
-    }
-  }
-  //console.log( linienId );
-  //console.log( steige );
-  for ( i in steige ) {
-    var j = linienId[ steige[i][1] ];
-    //console.log( 's'+steige[1] );
-    if ( typeof j == 'number' ) {
-        if ( data.lines[j].stations.indexOf( steige[i][2]) == -1 ) {
-          data.lines[j].stations.push(steige[i][2]);
-        }
-    }
-  }
-
-
-
-  var hs = [];
-  for ( i in haltestellen ) {
-
-    if ( isFinite(haltestellen[i][0]*1) ) {
-      hs[ haltestellen[i][0]*1 ] = [
-         haltestellen[i][3],  haltestellen[i][6], haltestellen[i][7]
-      ];
-    }
-  }
-
-
-
-  for (i in data.lines ) {
-    for (j in data.lines[i].stations ) {
-      var k = data.lines[i].stations[j];
-      data.lines[i].stations[j] = {
-        name: hs[k][0],
-        lat:hs[k][1],
-        lng:hs[k][2]
+    //console.log( linien );
+    for (const index in linien) {
+      if (linien[index][4] == 'ptMetro') {
+        linienId[linien[index][0] * 1] = data.lines.length;
+        data.lines.push({
+          name: linien[iindex][1],
+          color: c[linien[index][1]],
+          stations: []
+        });
       }
     }
-  }
-
-  fs.writeFile( 'linien.json', JSON.stringify(data), function(err) {
-    if ( !err ) {
-      res();
-    } else {
-      rej();
+    //console.log( linienId );
+    //console.log( steige );
+    for (const index in steige) {
+      let zweiterIndex = linienId[steige[index][1]];
+      //console.log( 's'+steige[1] );
+      if (typeof j == 'number') {
+        if (data.lines[zweiterIndex].stations.indexOf(steige[index][2]) == -1) {
+          data.lines[zweiterIndex].stations.push(steige[index][2]);
+        }
+      }
     }
-  } );
+    let hs = [];
+    for (const index in haltestellen) {
 
+      if (isFinite(haltestellen[index][0] * 1)) {
+        hs[haltestellen[index][0] * 1] = [
+          haltestellen[index][3], haltestellen[index][6], haltestellen[index][7]
+        ];
+      }
+    }
+
+    for (const index in data.lines) {
+      for (const zweiterIndex in data.lines[index].stations) {
+        let dritterIndex = data.lines[index].stations[zweiterIndex];
+        data.lines[index].stations[zweiterIndex] = {
+          name: hs[dritterIndex][0],
+          lat: hs[dritterIndex][1],
+          lng: hs[dritterIndex][2]
+        }
+      }
+    }
+
+    writeFile('linien.json', JSON.stringify(data), (error) => {
+      if (!error) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
   });
 
 }
