@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            console.log('DOM ready');
+        });
+
+
+        // FILEREADER - API - Daten lokal verarbeiten
+        // https://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
+        $(document).on('submit', 'form', (e) => {
+            e.preventDefault();
+            console.log($('#datei').val());
+            $("#btnSubmit").prop("disabled", true);
+            let form = $('#fileUploadForm')[0];
+
+            // Alternativ
+            // let data = new FormData(this);
+            let data = new FormData(form);
+
+            $.ajax({
+                type: 'POST',
+                enctype: 'multipart/form-data',
+                url: 'http://localhost:8286/upload',
+                data: data,
+                processData: false, // WICHTIG!!
+                contentType: false, // WICHTIG!!
+                success: function (data) {
+                    $('#result').text(data);
+                    console.log(`SUCCESS :${data}`);
+                    $('#btnSubmit').prop('disabled', false);
+                    $('#datei').val('');
+                },
+                error: function (e) {
+                    $('#result').text(e.responseText);
+                    console.log('ERROR : ', e);
+                    $('#btnSubmit').prop('disabled', false);
+                }
+            });
+        });
+    </script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="" method="post" enctype="multipart/form-data" id="fileUploadForm">
+        Datei:
+        <input type="file" name="datei" id="datei"><br>
+        <button type="submit" id="btnSubmit">Upload</button>
+    </form>
+</body>
+
+</html>
